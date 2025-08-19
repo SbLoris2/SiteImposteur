@@ -1,4 +1,4 @@
-/* Variables de couleur */
+/* Suppression des animations trop flashy pour mobile *//* Variables de couleur */
 :root {
     --barn-red: #780000ff;
     --fire-brick: #c1121fff;
@@ -545,7 +545,51 @@ body {
     margin: 1.5rem 0;
 }
 
-/* Suppression des animations trop flashy pour mobile */
+/* Révélation du premier joueur */
+.first-player-reveal {
+    background: rgba(253, 240, 213, 0.8);
+    backdrop-filter: blur(5px);
+    border: 2px solid var(--air-superiority-blue);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.first-player-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: pointDown 2s ease-in-out infinite;
+}
+
+@keyframes pointDown {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(10px); }
+}
+
+.first-player-reveal h3 {
+    color: var(--prussian-blue);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.first-player-reveal p {
+    color: var(--air-superiority-blue);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Info du tour actuel */
+#currentTurnInfo {
+    font-weight: 700;
+    color: var(--fire-brick);
+}
+
+#firstPlayerInfo {
+    font-weight: 600;
+    color: var(--prussian-blue);
+}
 @media (max-width: 768px) {
     .floating-shapes {
         opacity: 0.5;

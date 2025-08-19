@@ -19,7 +19,7 @@
     <div class="game-container">
         <div class="game-header">
             <h1 class="game-title">🎭 Imposteur</h1>
-            <p class="game-subtitle">pour Amaia lpb</p>
+            <p class="game-subtitle">+ Mr White</p>
         </div>
 
         <!-- Phase 1: Configuration du lobby -->
@@ -128,7 +128,26 @@
             </div>
         </div>
 
-        <!-- Phase 4: Jeu en cours -->
+        <!-- Phase 4: Premier joueur désigné -->
+        <div class="phase" id="phase-first-player">
+            <h2>🎲 Tour <span id="turnNumber">1</span></h2>
+            <div class="info-message">
+                Le jeu a désigné aléatoirement qui commence les descriptions.
+            </div>
+            
+            <div class="first-player-reveal">
+                <div class="first-player-icon">👆</div>
+                <h3><span id="selectedFirstPlayer">Joueur</span> commence !</h3>
+                <p>C'est à toi de donner la première description de ton mot.</p>
+            </div>
+            
+            <button class="btn btn-start" onclick="startGameRound()">
+                <span>Commencer le tour</span>
+                <div class="btn-arrow"></div>
+            </button>
+        </div>
+
+        <!-- Phase 5: Jeu en cours -->
         <div class="phase" id="phase-game">
             <h2>🎮 Partie en cours</h2>
             <div class="info-message">
@@ -151,7 +170,7 @@
             </button>
         </div>
 
-        <!-- Phase 5: Élimination -->
+        <!-- Phase 6: Élimination -->
         <div class="phase" id="phase-elimination">
             <h2>🗳️ Élimination</h2>
             <div class="info-message">
@@ -164,7 +183,7 @@
             </div>
         </div>
 
-        <!-- Phase 6: Résultat de l'élimination -->
+        <!-- Phase 7: Résultat de l'élimination -->
         <div class="phase" id="phase-result">
             <h2>🏆 Résultat de l'élimination</h2>
             
@@ -177,7 +196,7 @@
             </button>
         </div>
 
-        <!-- Phase 6: Tentative de deviner -->
+        <!-- Phase 8: Tentative de deviner -->
         <div class="phase" id="phase-guess">
             <h2>🤔 Tentative de deviner</h2>
             <div class="info-message">
@@ -205,7 +224,7 @@
             </div>
         </div>
 
-        <!-- Phase 7: Fin de partie -->
+        <!-- Phase 9: Fin de partie -->
         <div class="phase" id="phase-end">
             <h2 id="gameEndTitle">🎉 Fin de partie</h2>
             <div class="game-result" id="gameResult"></div>

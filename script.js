@@ -1,4 +1,11 @@
-// Paires de mots prédéfinies (Citoyens + Mr White seulement)
+/**
+ * Démarre l'élimination
+ */
+function startElimination() {
+    gameState.gamePhase = 'elimination';
+    switchPhase('phase-elimination');
+    displayEliminationPlayers();
+}// Paires de mots prédéfinies (Citoyens + Mr White seulement)
 const wordPairs = [
  { citoyen: "Chat", mrWhite: "Félin" },
     { citoyen: "Pizza", mrWhite: "Calzone" },
@@ -240,6 +247,8 @@ const wordPairs = [
     { citoyen: "Hippopotame", mrWhite: "Fleuve" }
 ];
 
+
+
 // État du jeu
 let gameState = {
     playerCount: 0,
@@ -251,7 +260,9 @@ let gameState = {
     currentDescriptionIndex: 0,
     votes: {},
     eliminatedPlayers: [],
-    gamePhase: 'config' // config, players, roles, descriptions, voting, guess, end
+    gamePhase: 'config', // config, players, roles, descriptions, voting, guess, end
+    turnNumber: 1, // Compteur de tours
+    firstPlayerIndex: -1 // Index du joueur qui commence
 };
 
 /**
@@ -499,13 +510,52 @@ function nextPlayerRole() {
  * Démarre la partie
  */
 function startGame() {
-    gameState.gamePhase = 'game';
-    switchPhase('phase-game');
+    gameState.gamePhase = 'first-player';
+    gameState.turnNumber = 1;
+    switchPhase('phase-first-player');
+    selectRandomFirstPlayer();
 }
 
 /**
- * Démarre l'élimination
+ * Sélectionne aléatoirement le premier joueur
  */
+function selectRandomFirstPlayer() {
+    const alivePlayers = gameState.players.filter(p => !gameState.eliminatedPlayers.includes(p.name));
+    
+    // Créer la liste des joueurs éligibles
+    let eligiblePlayers = alivePlayers;
+    
+    // Si on est avant le tour 3, exclure les imposteurs (règle cachée)
+    if (gameState.turnNumber < 3) {
+        eligiblePlayers = alivePlayers.filter(p => p.role !== 'imposteur');
+    }
+    
+    // Sélectionner aléatoirement parmi les joueurs éligibles
+    const randomIndex = Math.floor(Math.random() * eligiblePlayers.length);
+    const selectedPlayer = eligiblePlayers[randomIndex];
+    
+    // Trouver l'index du joueur sélectionné dans la liste complète des joueurs vivants
+    gameState.firstPlayerIndex = alivePlayers.findIndex(p => p.name === selectedPlayer.name);
+    
+    // Mettre à jour l'affichage
+    document.getElementById('turnNumber').textContent = gameState.turnNumber;
+    document.getElementById('selectedFirstPlayer').textContent = selectedPlayer.name;
+}
+
+/**
+ * Démarre le tour de jeu
+ */
+function startGameRound() {
+    gameState.gamePhase = 'game';
+    switchPhase('phase-game');
+    
+    // Mettre à jour les infos du jeu
+    const alivePlayers = gameState.players.filter(p => !gameState.eliminatedPlayers.includes(p.name));
+    const firstPlayer = alivePlayers[gameState.firstPlayerIndex];
+    
+    document.getElementById('currentTurnInfo').textContent = `Tour ${gameState.turnNumber}`;
+    document.getElementById('firstPlayerInfo').textContent = `${firstPlayer.name} commence`;
+}
 function startElimination() {
     gameState.gamePhase = 'elimination';
     switchPhase('phase-elimination');
@@ -631,9 +681,11 @@ function checkWinConditions() {
         // Tous les imposteurs ET Mr White sont éliminés, les citoyens gagnent
         endGame('citizens', 'Tous les imposteurs et Mr White ont été éliminés !');
     } else {
-        // Le jeu continue tant qu'il reste des imposteurs OU des Mr White
-        gameState.gamePhase = 'game';
-        switchPhase('phase-game');
+        // Le jeu continue avec un nouveau tour
+        gameState.turnNumber++;
+        gameState.gamePhase = 'first-player';
+        switchPhase('phase-first-player');
+        selectRandomFirstPlayer();
     }
 }
 
@@ -717,7 +769,9 @@ function restartGame() {
         currentDescriptionIndex: 0,
         votes: {},
         eliminatedPlayers: [],
-        gamePhase: 'config'
+        gamePhase: 'config',
+        turnNumber: 1,
+        firstPlayerIndex: -1
     };
     
     // Réinitialiser les éléments du DOM

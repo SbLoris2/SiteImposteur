@@ -1,23 +1,26 @@
-        <!-- Phase 6: Résultat de l'élimination -->
-        <div class="phase" id="phase-result">
-            <h2>🏆 Résultat de l'élimination</h2>
-            
-            <div class="eliminated-player" id="eliminatedPlayerResult"></div>
-            <div class="role-reveal-section" id="roleRevealResult"></div>
-            
-            <button class="btn" id="continueAfterElimination" onclick="continueGame()">Continuer</button>
-        </div><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu Imposteur + Mr White</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+    </div>
+
     <div class="game-container">
-        <h1 class="game-title">🎭 Imposteur</h1>
-        <p class="game-subtitle">+ Mr White</p>
+        <div class="game-header">
+            <h1 class="game-title">🎭 Imposteur</h1>
+            <p class="game-subtitle">+ Mr White</p>
+        </div>
 
         <!-- Phase 1: Configuration du lobby -->
         <div class="phase active" id="phase-config">
@@ -32,6 +35,8 @@
                 <label for="imposteurCount">Nombre d'imposteurs</label>
                 <select id="imposteurCount">
                     <option value="1">1 Imposteur</option>
+                    <option value="2">2 Imposteurs</option>
+                    <option value="3">3 Imposteurs</option>
                 </select>
             </div>
 
@@ -39,6 +44,8 @@
                 <label for="mrWhiteCount">Nombre de Mr White</label>
                 <select id="mrWhiteCount">
                     <option value="1">1 Mr White</option>
+                    <option value="2">2 Mr White</option>
+                    <option value="3">3 Mr White</option>
                 </select>
             </div>
 
@@ -46,12 +53,15 @@
                 <h3>🎯 Rappel des rôles :</h3>
                 <ul>
                     <li><strong>Citoyens :</strong> Ont tous le même mot, doivent démasquer Imposteur et Mr White</li>
-                    <li><strong>Imposteur :</strong> A un mot différent, doit deviner le mot des citoyens</li>
+                    <li><strong>Imposteur :</strong> N'a pas de mot, doit deviner le mot des citoyens</li>
                     <li><strong>Mr White :</strong> A un synonyme/mot proche, doit aussi deviner le mot des citoyens</li>
                 </ul>
             </div>
 
-            <button class="btn" onclick="startPlayerRegistration()">Commencer l'inscription des joueurs</button>
+            <button class="btn btn-pulse" onclick="startPlayerRegistration()">
+                <span>Commencer l'inscription des joueurs</span>
+                <div class="btn-sparkle"></div>
+            </button>
         </div>
 
         <!-- Phase 2: Inscription des joueurs -->
@@ -65,13 +75,19 @@
                 <input type="text" id="playerNameInput" placeholder="Entrez votre nom..." maxlength="20">
             </div>
             
-            <button class="btn" onclick="addPlayer()">Ajouter ce joueur</button>
+            <button class="btn btn-bounce" onclick="addPlayer()">
+                <span>Ajouter ce joueur</span>
+                <div class="btn-ripple"></div>
+            </button>
             
             <div class="players-list" id="playersList"></div>
             
             <div id="playersStatus"></div>
             
-            <button class="btn" id="continueToRoles" onclick="assignRoles()" style="display:none;">Continuer vers l'attribution des rôles</button>
+            <button class="btn btn-glow" id="continueToRoles" onclick="assignRoles()" style="display:none;">
+                <span>Continuer vers l'attribution des rôles</span>
+                <div class="btn-shine"></div>
+            </button>
         </div>
 
         <!-- Phase 3: Attribution des rôles -->
@@ -85,20 +101,30 @@
                 Au tour de : [Joueur]
             </div>
             
-            <button class="btn" id="revealRoleBtn" onclick="revealRole()">Voir mon rôle et mon mot</button>
+            <button class="btn btn-reveal" id="revealRoleBtn" onclick="revealRole()">
+                <span>Voir mon rôle et mon mot</span>
+                <div class="btn-magic"></div>
+            </button>
             
-            <div id="roleReveal" style="display:none;">
+            <div id="roleReveal" class="role-reveal-container" style="display:none;">
                 <div class="role-badge" id="playerRole"></div>
                 <div class="word-display" id="playerWord"></div>
                 <div class="info-message" id="roleInstructions"></div>
-                <button class="btn" onclick="nextPlayerRole()">Passer au joueur suivant</button>
+                <button class="btn btn-next" onclick="nextPlayerRole()">
+                    <span>Passer au joueur suivant</span>
+                    <div class="btn-arrow"></div>
+                </button>
             </div>
 
-            <div id="allRolesRevealed" style="display:none;">
+            <div id="allRolesRevealed" class="completion-message" style="display:none;">
+                <div class="success-icon">🎉</div>
                 <div class="info-message">
                     Tous les rôles ont été distribués ! Vous pouvez maintenant commencer la partie.
                 </div>
-                <button class="btn" onclick="startGame()">Commencer la partie</button>
+                <button class="btn btn-start" onclick="startGame()">
+                    <span>Commencer la partie</span>
+                    <div class="btn-explosion"></div>
+                </button>
             </div>
         </div>
 
@@ -119,7 +145,10 @@
                 <p><strong>🎯 Objectif :</strong> Les citoyens doivent démasquer l'imposteur et Mr White !</p>
             </div>
             
-            <button class="btn" onclick="startElimination()">Procéder au vote d'élimination</button>
+            <button class="btn btn-vote" onclick="startElimination()">
+                <span>Procéder au vote d'élimination</span>
+                <div class="btn-voting"></div>
+            </button>
         </div>
 
         <!-- Phase 5: Élimination -->
@@ -135,6 +164,19 @@
             </div>
         </div>
 
+        <!-- Phase 6: Résultat de l'élimination -->
+        <div class="phase" id="phase-result">
+            <h2>🏆 Résultat de l'élimination</h2>
+            
+            <div class="eliminated-player" id="eliminatedPlayerResult"></div>
+            <div class="role-reveal-section" id="roleRevealResult"></div>
+            
+            <button class="btn btn-continue" id="continueAfterElimination" onclick="continueGame()">
+                <span>Continuer</span>
+                <div class="btn-forward"></div>
+            </button>
+        </div>
+
         <!-- Phase 6: Tentative de deviner -->
         <div class="phase" id="phase-guess">
             <h2>🤔 Tentative de deviner</h2>
@@ -146,39 +188,24 @@
                 Passez le téléphone à <span id="guessingPlayerName"></span>
             </div>
             
-            <button class="btn" onclick="showGuessInput()">Je suis prêt à deviner</button>
+            <button class="btn btn-ready" onclick="showGuessInput()">
+                <span>Je suis prêt à deviner</span>
+                <div class="btn-thinking"></div>
+            </button>
             
-            <div id="guessSection" style="display:none;">
+            <div id="guessSection" class="guess-container" style="display:none;">
                 <div class="config-group">
                     <label for="guessInput">Quel est le mot des citoyens ?</label>
                     <input type="text" id="guessInput" placeholder="Entrez votre proposition..." maxlength="30">
                 </div>
-                <button class="btn" onclick="submitGuess()">Valider ma réponse</button>
+                <button class="btn btn-submit" onclick="submitGuess()">
+                    <span>Valider ma réponse</span>
+                    <div class="btn-check"></div>
+                </button>
             </div>
         </div>
 
         <!-- Phase 7: Fin de partie -->
-        <div class="phase" id="phase-guess">
-            <h2>🤔 Tentative de deviner</h2>
-            <div class="info-message">
-                <span id="guessingPlayer"></span> a été éliminé ! Il peut maintenant tenter de deviner le mot des citoyens.
-            </div>
-            
-            <div class="current-player">
-                Passez le téléphone à <span id="guessingPlayerName"></span>
-            </div>
-            
-            <button class="btn" onclick="showGuessInput()">Je suis prêt à deviner</button>
-            
-            <div id="guessSection" style="display:none;">
-                <div class="config-group">
-                    <label for="guessInput">Quel est le mot des citoyens ?</label>
-                    <input type="text" id="guessInput" placeholder="Entrez votre proposition..." maxlength="30">
-                </div>
-                <button class="btn" onclick="submitGuess()">Valider ma réponse</button>
-            </div>
-        </div>
-
         <div class="phase" id="phase-end">
             <h2 id="gameEndTitle">🎉 Fin de partie</h2>
             <div class="game-result" id="gameResult"></div>
@@ -188,7 +215,10 @@
                 <div id="allPlayersRoles"></div>
             </div>
             
-            <button class="btn" onclick="restartGame()">Nouvelle partie</button>
+            <button class="btn btn-restart" onclick="restartGame()">
+                <span>Nouvelle partie</span>
+                <div class="btn-refresh"></div>
+            </button>
         </div>
     </div>
 

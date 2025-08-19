@@ -1,0 +1,197 @@
+        <!-- Phase 6: Résultat de l'élimination -->
+        <div class="phase" id="phase-result">
+            <h2>🏆 Résultat de l'élimination</h2>
+            
+            <div class="eliminated-player" id="eliminatedPlayerResult"></div>
+            <div class="role-reveal-section" id="roleRevealResult"></div>
+            
+            <button class="btn" id="continueAfterElimination" onclick="continueGame()">Continuer</button>
+        </div><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu Imposteur + Mr White</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">🎭 Imposteur</h1>
+        <p class="game-subtitle">+ Mr White</p>
+
+        <!-- Phase 1: Configuration du lobby -->
+        <div class="phase active" id="phase-config">
+            <h2>Configuration de la partie</h2>
+            
+            <div class="config-group">
+                <label for="playerCount">Nombre de joueurs (5-10 recommandé)</label>
+                <input type="number" id="playerCount" min="3" max="15" value="6">
+            </div>
+
+            <div class="config-group">
+                <label for="imposteurCount">Nombre d'imposteurs</label>
+                <select id="imposteurCount">
+                    <option value="1">1 Imposteur</option>
+                </select>
+            </div>
+
+            <div class="config-group">
+                <label for="mrWhiteCount">Nombre de Mr White</label>
+                <select id="mrWhiteCount">
+                    <option value="1">1 Mr White</option>
+                </select>
+            </div>
+
+            <div class="game-rules">
+                <h3>🎯 Rappel des rôles :</h3>
+                <ul>
+                    <li><strong>Citoyens :</strong> Ont tous le même mot, doivent démasquer Imposteur et Mr White</li>
+                    <li><strong>Imposteur :</strong> A un mot différent, doit deviner le mot des citoyens</li>
+                    <li><strong>Mr White :</strong> A un synonyme/mot proche, doit aussi deviner le mot des citoyens</li>
+                </ul>
+            </div>
+
+            <button class="btn" onclick="startPlayerRegistration()">Commencer l'inscription des joueurs</button>
+        </div>
+
+        <!-- Phase 2: Inscription des joueurs -->
+        <div class="phase" id="phase-players">
+            <h2>Inscription des joueurs</h2>
+            <div class="current-player" id="currentPlayerPrompt">
+                Joueur 1 : Entrez votre nom
+            </div>
+            
+            <div class="config-group">
+                <input type="text" id="playerNameInput" placeholder="Entrez votre nom..." maxlength="20">
+            </div>
+            
+            <button class="btn" onclick="addPlayer()">Ajouter ce joueur</button>
+            
+            <div class="players-list" id="playersList"></div>
+            
+            <div id="playersStatus"></div>
+            
+            <button class="btn" id="continueToRoles" onclick="assignRoles()" style="display:none;">Continuer vers l'attribution des rôles</button>
+        </div>
+
+        <!-- Phase 3: Attribution des rôles -->
+        <div class="phase" id="phase-roles">
+            <h2>Attribution des rôles</h2>
+            <div class="info-message">
+                Chaque joueur va maintenant découvrir son rôle et son mot. Passez-vous le téléphone/ordinateur tour à tour.
+            </div>
+            
+            <div class="current-player" id="currentRolePlayer">
+                Au tour de : [Joueur]
+            </div>
+            
+            <button class="btn" id="revealRoleBtn" onclick="revealRole()">Voir mon rôle et mon mot</button>
+            
+            <div id="roleReveal" style="display:none;">
+                <div class="role-badge" id="playerRole"></div>
+                <div class="word-display" id="playerWord"></div>
+                <div class="info-message" id="roleInstructions"></div>
+                <button class="btn" onclick="nextPlayerRole()">Passer au joueur suivant</button>
+            </div>
+
+            <div id="allRolesRevealed" style="display:none;">
+                <div class="info-message">
+                    Tous les rôles ont été distribués ! Vous pouvez maintenant commencer la partie.
+                </div>
+                <button class="btn" onclick="startGame()">Commencer la partie</button>
+            </div>
+        </div>
+
+        <!-- Phase 4: Jeu en cours -->
+        <div class="phase" id="phase-game">
+            <h2>🎮 Partie en cours</h2>
+            <div class="info-message">
+                La partie a commencé ! Posez le téléphone et commencez les discussions.
+            </div>
+            
+            <div class="game-rules">
+                <h3>📋 Déroulement :</h3>
+                <ul>
+                    <li><strong>Tour 1 :</strong> Chaque joueur donne une description de son mot (1 phrase max)</li>
+                    <li><strong>Tour 2+ :</strong> Débat libre entre les joueurs</li>
+                    <li><strong>Vote :</strong> Désignez qui éliminer</li>
+                </ul>
+                <p><strong>🎯 Objectif :</strong> Les citoyens doivent démasquer l'imposteur et Mr White !</p>
+            </div>
+            
+            <button class="btn" onclick="startElimination()">Procéder au vote d'élimination</button>
+        </div>
+
+        <!-- Phase 5: Élimination -->
+        <div class="phase" id="phase-elimination">
+            <h2>🗳️ Élimination</h2>
+            <div class="info-message">
+                Qui a été éliminé suite au vote des joueurs ?
+            </div>
+            
+            <div class="voting-section">
+                <h3>Sélectionnez le joueur éliminé :</h3>
+                <div id="eliminationPlayers" class="voting-players"></div>
+            </div>
+        </div>
+
+        <!-- Phase 6: Tentative de deviner -->
+        <div class="phase" id="phase-guess">
+            <h2>🤔 Tentative de deviner</h2>
+            <div class="info-message">
+                <span id="guessingPlayer"></span> a été éliminé ! Il peut maintenant tenter de deviner le mot des citoyens.
+            </div>
+            
+            <div class="current-player">
+                Passez le téléphone à <span id="guessingPlayerName"></span>
+            </div>
+            
+            <button class="btn" onclick="showGuessInput()">Je suis prêt à deviner</button>
+            
+            <div id="guessSection" style="display:none;">
+                <div class="config-group">
+                    <label for="guessInput">Quel est le mot des citoyens ?</label>
+                    <input type="text" id="guessInput" placeholder="Entrez votre proposition..." maxlength="30">
+                </div>
+                <button class="btn" onclick="submitGuess()">Valider ma réponse</button>
+            </div>
+        </div>
+
+        <!-- Phase 7: Fin de partie -->
+        <div class="phase" id="phase-guess">
+            <h2>🤔 Tentative de deviner</h2>
+            <div class="info-message">
+                <span id="guessingPlayer"></span> a été éliminé ! Il peut maintenant tenter de deviner le mot des citoyens.
+            </div>
+            
+            <div class="current-player">
+                Passez le téléphone à <span id="guessingPlayerName"></span>
+            </div>
+            
+            <button class="btn" onclick="showGuessInput()">Je suis prêt à deviner</button>
+            
+            <div id="guessSection" style="display:none;">
+                <div class="config-group">
+                    <label for="guessInput">Quel est le mot des citoyens ?</label>
+                    <input type="text" id="guessInput" placeholder="Entrez votre proposition..." maxlength="30">
+                </div>
+                <button class="btn" onclick="submitGuess()">Valider ma réponse</button>
+            </div>
+        </div>
+
+        <div class="phase" id="phase-end">
+            <h2 id="gameEndTitle">🎉 Fin de partie</h2>
+            <div class="game-result" id="gameResult"></div>
+            
+            <div class="final-roles" id="finalRoles">
+                <h3>🎭 Révélation des rôles :</h3>
+                <div id="allPlayersRoles"></div>
+            </div>
+            
+            <button class="btn" onclick="restartGame()">Nouvelle partie</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

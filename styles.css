@@ -1,0 +1,398 @@
+/* Reset et base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+/* Container principal */
+.game-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+}
+
+/* Titres */
+.game-title {
+    color: #764ba2;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.game-subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+/* Gestion des phases */
+.phase {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.phase.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Groupes de configuration */
+.config-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.config-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.config-group input, 
+.config-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.config-group input:focus, 
+.config-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Boutons */
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 0.5rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Liste des joueurs */
+.players-list {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.player-item {
+    padding: 0.8rem;
+    background: white;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Attribution des rôles */
+.roles-assignment {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.role-citoyen { 
+    background: #d4edda; 
+    color: #155724; 
+}
+
+.role-imposteur { 
+    background: #f8d7da; 
+    color: #721c24; 
+}
+
+.role-mrwhite { 
+    background: #fff3cd; 
+    color: #856404; 
+}
+
+/* Affichage des mots */
+.word-display {
+    background: #667eea;
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin: 1rem 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Messages */
+.error-message {
+    color: #dc3545;
+    background: #f8d7da;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.info-message {
+    color: #004085;
+    background: #cce7ff;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* Règles du jeu */
+.game-rules {
+    text-align: left;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.game-rules h3 {
+    margin-bottom: 0.5rem;
+    color: #667eea;
+}
+
+.game-rules ul {
+    margin-left: 1rem;
+}
+
+.game-rules li {
+    margin-bottom: 0.3rem;
+}
+
+/* Joueur actuel */
+.current-player {
+    background: #667eea;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Tours et votes */
+.voting-players {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.voting-player {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.voting-player:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.voting-player.selected {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.voting-player.eliminated {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8f9fa;
+}
+
+.vote-count {
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.eliminated-player {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.role-reveal-section {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.game-result {
+    font-size: 1.3rem;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin: 1rem 0;
+    font-weight: bold;
+}
+
+.victory-citizens {
+    background: #d4edda;
+    color: #155724;
+}
+
+.victory-imposters {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.final-roles {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.final-role-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 0.3rem 0;
+    background: white;
+    border-radius: 8px;
+}
+
+.voting-section {
+    margin: 1.5rem 0;
+}
+
+.voting-section h3 {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.vote-results {
+    margin: 1.5rem 0;
+}
+
+.description-counter {
+    background: #667eea;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 1rem 0;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .game-container {
+        padding: 1.5rem;
+        width: 95%;
+    }
+    
+    .game-title {
+        font-size: 2rem;
+    }
+    
+    .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .word-display {
+        padding: 1.5rem;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-container {
+        padding: 1rem;
+    }
+    
+    .game-title {
+        font-size: 1.8rem;
+    }
+    
+    .config-group input,
+    .config-group select {
+        padding: 0.6rem;
+    }
+    
+    .player-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
